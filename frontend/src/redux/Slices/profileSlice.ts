@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-    //@ts-expect-error error
     user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null,
 };
 
