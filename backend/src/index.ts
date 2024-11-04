@@ -9,10 +9,10 @@ const port = 5000;
 app.use(express.json());
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://hotel-booking-demo-ten.vercel.app',
 }));
 
-app.use('/api/v1',router);
+app.use('/api/v1', router);
 
 
 app.get('/', (req: Request, res: Response) => {

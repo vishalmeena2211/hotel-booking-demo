@@ -1,5 +1,5 @@
-// const baseUrl = process.env.BASE_URL ?? 'https://books-donation-assessment.onrender.com';
-const baseUrl = "http://localhost:5000";
+// const baseUrl = "http://localhost:5000";
+const baseUrl = "https://hotel-booking-demo.onrender.com";
 
 export const authApis = {
     login: `${baseUrl}/api/v1/login`,
