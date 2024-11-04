@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  name            String
+  email           String    @unique
+  imageUrl        String?   // Optional URL for user's image
+  password        String
+  role            UserRole   @default(USER) // Default role set to USER
+  
+  // Aadhar details stored in User model
+  aadharNumber    String?    @unique // Unique Aadhar card number
+  aadharPhotoUrl  String?    // URL to Aadhar card photo
+  
+  bookings        Booking[]
+}
+
+model Hotel {
+  id              Int       @id @default(autoincrement())
+  name            String
+  location        String
+  bookings        Booking[]
+}
+
+model Booking {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  hotelId         Int
+  startDate       DateTime
+  endDate         DateTime
+  status          BookingStatus @default(PENDING)
+  
+  user            User       @relation(fields: [userId], references: [id])
+  hotel           Hotel      @relation(fields: [hotelId], references: [id])
+  
+  members         Member[]   @relation("BookingMembers") // Relation to members associated with this booking
+}
+
+model Member {
+  id              Int       @id @default(autoincrement())
+  name            String
+  aadharNumber    String    @unique // Aadhar card number (unique for each member)
+  aadharPhotoUrl  String    // URL to Aadhar card photo
+  
+  bookings        Booking[]   @relation("BookingMembers") // Relation to bookings this member is associated with
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  HOTEL_MANAGER
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
